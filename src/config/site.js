@@ -14,6 +14,10 @@ const menuItems = [
   {
     label: 'HID Reader',
     href: '/hid-reader'
+  },
+  {
+    label: 'Device Explorer',
+    href: '/device-explorer'
   }
 ]
 

@@ -4,6 +4,7 @@ import Sidebar from './navigation/Sidebar'
 // import Profile from './screens/Profile'
 // import Options from './screens/Options'
 import HIDReader from './screens/HIDReader'
+import DeviceExplorer from './screens/DeviceExplorer'
 
 function App () {
   return (
@@ -15,6 +16,7 @@ function App () {
           {/* <Route path='/profile' element={<Profile />} />
           <Route path='/options' element={<Options />} /> */}
           <Route path='/hid-reader' element={<HIDReader />} />
+          <Route path='/device-explorer' element={<DeviceExplorer />} />
         </Routes>
       </main>
     </BrowserRouter>
