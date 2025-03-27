@@ -23,7 +23,9 @@ function MicVolumeMeter () {
 
   const startMic = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: { deviceId: selectedId }
+      })
       const audioContext = new AudioContext()
       const source = audioContext.createMediaStreamSource(stream)
 
