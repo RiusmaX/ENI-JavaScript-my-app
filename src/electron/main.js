@@ -51,7 +51,7 @@ app.whenReady().then(() => {
 })
 
 ipcMain.handle('connect-to-device', (_, vendorId, productId) => {
-  const worker = new Worker(path.join(__dirname, 'src', 'workers', 'hid-worker.js'), {
+  const worker = new Worker(path.join(__dirname, 'hid-worker.js'), {
     workerData: { vendorId, productId }
   })
 
