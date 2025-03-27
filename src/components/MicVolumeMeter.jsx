@@ -1,14 +1,25 @@
-/* global AudioContext */
+/* global AudioContext requestAnimationFrame cancelAnimationFrame */
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 function MicVolumeMeter () {
+  const [devices, setDevices] = useState([])
+  const [selectedId, setSelectedId] = useState('')
+
   const [volume, setVolume] = useState(0)
   const [isListening, setIsListening] = useState(false)
 
   const audioContextRef = useRef(null)
   const analyserRef = useRef(null)
   const animationRef = useRef(null)
+
+  useEffect(() => {
+    navigator.mediaDevices.enumerateDevices().then((list) => {
+      const inputs = list.filter((d) => d.kind === 'audioinput')
+      setDevices(inputs)
+      if (inputs[0]) setSelectedId(inputs[0].deviceId) // auto-sélection
+    })
+  }, [])
 
   const startMic = async () => {
     try {
@@ -57,8 +68,23 @@ function MicVolumeMeter () {
   }
 
   return (
-    <div className='flex w-full h-full items-center justify-center'>
+    <div className='flex flex-col w-full h-full items-center justify-center'>
       <h1 className='text-2xl font-bold my-4'>🎙️ Affichage du volume du micro</h1>
+
+      <div className='mb-4'>
+        <label className='block mb-1 font-medium'>Sélectionner un micro :</label>
+        <select
+          className='border rounded px-3 py-2 w-full'
+          value={selectedId}
+          onChange={(e) => setSelectedId(e.target.value)}
+        >
+          {devices.map((d) => (
+            <option key={d.deviceId} value={d.deviceId}>
+              {d.label || '(Micro non autorisé)'}
+            </option>
+          ))}
+        </select>
+      </div>
 
       <div className='flex gap-4 mb-6'>
         {
@@ -82,9 +108,9 @@ function MicVolumeMeter () {
         }
       </div>
 
-      <div className='h-6 w-full bg-gray-300 rounded overflow-hidden'>
+      <div className='h-6 w-[500px] bg-gray-300 rounded overflow-hidden'>
         <div
-          className='h-full bg-amber-500 transition-all duration-100'
+          className='h-full bg-amber-500'
           style={{ width: `${volume * 100}%` }}
         />
       </div>
